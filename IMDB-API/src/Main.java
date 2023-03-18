@@ -16,7 +16,7 @@ import org.json.*;
 
 public class Main {
 
-    private static final String KEY = "";
+    private static final String KEY = "k_nwci51h1";
     private static final URI apiIMDB = URI.create("https://imdb-api.com/en/API/Top250Movies/" + KEY);
 
     public static void main(String[] args) throws URISyntaxException, IOException, InterruptedException {
@@ -34,29 +34,59 @@ public class Main {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println(response);
         String json = response.body();
+        System.out.println(json);
 
         JSONObject obj = new JSONObject(json);
         JSONArray arr = obj.getJSONArray("items");
+        //System.out.println(arr);
+
 
         List<String> titles = new ArrayList<>();
+        List<String> urlImages = new ArrayList<>();
+        List<String> years = new ArrayList<>();
+        List<String> ratings = new ArrayList<>();
+
         for (int i =0;i<arr.length();i++){
             titles.add(arr.getJSONObject(i).getString("fullTitle"));
-        }
-        //titles.forEach(System.out::println);
-        System.out.println(titles);
-        //System.out.println(arr.getJSONObject(0).getString("title"));
-        List<String> urlImages = new ArrayList<>();
-        for (int i =0;i<arr.length();i++){
             urlImages.add(arr.getJSONObject(i).getString("image"));
+            years.add(arr.getJSONObject(i).getString("year"));
+            ratings.add(arr.getJSONObject(i).getString("imDbRating"));
         }
+
+
+        List<Movie> movies= new ArrayList<>();
+        for (int i =0;i<arr.length();i++){
+            Movie movie = new Movie();
+            movie.setTitle(arr.getJSONObject(i).getString("fullTitle"));
+            movie.setImage(arr.getJSONObject(i).getString("image"));
+            movie.setYear(arr.getJSONObject(i).getString("year"));
+            movie.setRating(arr.getJSONObject(i).getString("imDbRating"));
+
+            movies.add(movie);
+        }
+        System.out.println(movies);
+        System.out.println(titles);
         System.out.println(urlImages);
+        System.out.println(years);
+        System.out.println(ratings);
+
+
+
 /*
         String[] moviesArray = parseJsonMovies(json);
+        System.out.println(Arrays.toString(moviesArray));
+
 
         List<String> titles = parseTitles(moviesArray);
         titles.forEach(System.out::println);
 
         List<String> urlImages = parseUrlImages(moviesArray);
+        urlImages.forEach(System.out::println);
+
+        List<String> years = parseYears(moviesArray);
+        urlImages.forEach(System.out::println);
+
+        List<String> ratings = parseRatings(moviesArray);
         urlImages.forEach(System.out::println);
 
         //outras listas para rating e years
@@ -87,6 +117,14 @@ public class Main {
 
         private static List<String> parseUrlImages(String[] moviesArray) {
             return parseAttribute(moviesArray, 5);
+        }
+
+        private static List<String> parseYears(String[] moviesArray) {
+            return parseAttribute(moviesArray, 4);
+        }
+
+        private static List<String> parseRatings(String[] moviesArray) {
+            return parseAttribute(moviesArray, 7);
         }
 
         private static List<String> parseAttribute(String[] moviesArray, int pos) {

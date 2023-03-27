@@ -23,7 +23,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         System.out.println("IMDB Top 250 Movies json");
-        String apiKey = "";
+        String apiKey = "k_nwci51h1";
 
 
         String json = new ImdbApiClient(apiKey).getBody();

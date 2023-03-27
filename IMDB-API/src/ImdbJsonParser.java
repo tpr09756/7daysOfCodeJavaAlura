@@ -4,7 +4,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImdbJsonParser {
+public class ImdbJsonParser implements JsonParser{
     private String json;
 
     public ImdbJsonParser(String json){
@@ -14,15 +14,14 @@ public class ImdbJsonParser {
     public List<Movie> parse() {
         JSONArray moviesArray = parseJsonMovies(json);
 
+        List<String> titles = parseTitles(moviesArray);
+        List<String> urlImages = parseUrlImages(moviesArray);
+        List<String> years = parseYears(moviesArray);
+        List<String> ratings = parseRatings(moviesArray);
+
         List<Movie> movies= new ArrayList<>();
         for (int i =0;i<moviesArray.length();i++){
-            Movie movie = new Movie();
-            movie.setTitle(moviesArray.getJSONObject(i).getString("fullTitle"));
-            movie.setImage(moviesArray.getJSONObject(i).getString("image"));
-            movie.setYear(moviesArray.getJSONObject(i).getString("year"));
-            movie.setRating(moviesArray.getJSONObject(i).getString("imDbRating"));
-
-            movies.add(movie);
+            movies.add(new Movie(titles.get(i), urlImages.get(i), years.get(i), ratings.get(i)));
         }
         return movies;
     }

@@ -8,7 +8,7 @@ public class HTMLGenerator {
         this.printWriter = printWriter;
     }
 
-    public void generate(List<Movie> movies) {
+    public void generate(List<? extends Content> contentList) {
         printWriter.println(
                 """
                 <html>
@@ -22,7 +22,7 @@ public class HTMLGenerator {
                     <body>
                 """);
 
-        for (Movie movie : movies) {
+        for (Content content : contentList) {
             String div =
                     """
                     <div class=\"card text-white bg-dark mb-3\" style=\"max-width: 18rem;\">
@@ -34,7 +34,7 @@ public class HTMLGenerator {
                     </div>
                     """;
 
-            printWriter.println(String.format(div, movie.getTitle(), movie.getImage(), movie.getTitle(), movie.getRating(), movie.getYear()));
+            printWriter.println(String.format(div, content.title(), content.urlImage(), content.title(), content.rating(), content.year()));
         }
 
 

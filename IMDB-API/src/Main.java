@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
@@ -16,7 +17,7 @@ import org.json.*;
 
 public class Main {
 
-    private static final String KEY = "k_nwci51h1";
+    private static final String KEY = "";
     private static final URI apiIMDB = URI.create("https://imdb-api.com/en/API/Top250Movies/" + KEY);
 
     public static void main(String[] args) throws URISyntaxException, IOException, InterruptedException {
@@ -65,10 +66,13 @@ public class Main {
             movies.add(movie);
         }
         System.out.println(movies);
-        System.out.println(titles);
-        System.out.println(urlImages);
-        System.out.println(years);
-        System.out.println(ratings);
+
+        PrintWriter writer = new PrintWriter("content.html");
+        new HTMLGenerator(writer).generate(movies);
+        writer.close();
+
+
+
 
 
 

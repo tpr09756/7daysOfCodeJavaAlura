@@ -6,7 +6,21 @@ public class Movie{
     String year;
     String rating;
 
+    public String getTitle() {
+        return title;
+    }
 
+    public String getImage() {
+        return image;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public String getRating() {
+        return rating;
+    }
 
     public void setTitle(String fullTitle) {
         this.title = fullTitle;
